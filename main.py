@@ -15,7 +15,7 @@ extract_products()
 
 def transform_products(df):
     df = df.copy()
-    cols_drop = ["images", "thumbnail", "description"]
+    cols_drop = ["images", "thumbnail", "description", "tags", "reviews"]
     df.drop(columns = cols_drop, inplace=True, axis=1, errors='ignore')
     df.rename(columns = { 
         "title": "product_name",
@@ -33,8 +33,8 @@ def transform_products(df):
         "category": "Unknown"
     }, inplace=True)
     
-    df["final_price"] = df["final_price"].apply(lambda x: f"${x}")
-    df["discount_pct"] = df["discount_pct"].apply(lambda x: f"{x}%")
+    # df["final_price"] = df["final_price"].apply(lambda x: f"${x}")
+    # df["discount_pct"] = df["discount_pct"].apply(lambda x: f"{x}%")
 
     return df
 df_raw = extract_products()
