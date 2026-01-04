@@ -1,6 +1,9 @@
 import requests
 import pandas as pd
 from datetime import datetime
+import os
+from sqlalchemy import create_engine
+from urllib.parse import quote_plus
 def extract_products():
     url = "https://dummyjson.com/products?limit=100"
     response = requests.get(url)
@@ -40,3 +43,17 @@ def transform_products(df):
 df_raw = extract_products()
 df_clean = transform_products(df_raw)
 print(df_clean.head())
+
+
+def load_products(df, db_name="products.db", table_name="products"):
+    engine = create_engine(f"sqlite:///{db_name}")
+    
+    df.to_sql(
+        name=table_name,
+        con=engine,
+        if_exists="replace",   
+        index=False
+    )
+    print("Les data ont été enregistrées dans SQLite avec succès.")
+load_products(df_clean)
+
